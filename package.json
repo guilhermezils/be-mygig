@@ -1,0 +1,8 @@
+{
+  "name": "be-mygig",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:guilhermezils/be-mygig.git",
+  "author": "guilhermezils <guilhermezils@icloud.com>",
+  "license": "MIT"
+}
