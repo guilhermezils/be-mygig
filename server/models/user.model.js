@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
 import crypto from 'crypto'
 const UserSchema = new mongoose.Schema({
+  
+  // fields and associated properties
   name: {
     type: String,
     trim: true,
@@ -36,7 +38,8 @@ const UserSchema = new mongoose.Schema({
 })
 
 UserSchema
-  .virtual('password')
+  .virtual('password') 
+  // password not stored in the user document but in a virtual field.
   .set(function(password) {
     this._password = password
     this.salt = this.makeSalt()
@@ -46,6 +49,8 @@ UserSchema
     return this._password
   })
 
+
+  //password validation logic
 UserSchema.path('hashed_password').validate(function(v) {
   if (this._password && this._password.length < 6) {
     this.invalidate('password', 'Password must be at least 6 characters.')
@@ -55,6 +60,8 @@ UserSchema.path('hashed_password').validate(function(v) {
   }
 }, null)
 
+
+//encrypt/authenticate password
 UserSchema.methods = {
   authenticate: function(plainText) {
     return this.encryptPassword(plainText) === this.hashed_password
@@ -70,6 +77,9 @@ UserSchema.methods = {
       return ''
     }
   },
+  
+  // ensures that even in the case of 2 users with the same password
+  // it will have 2 differents hashed-password.
   makeSalt: function() {
     return Math.round((new Date().valueOf() * Math.random())) + ''
   }
