@@ -36,8 +36,22 @@ const signin = async (req, res) => {
       message: "signed out"
     })
   }
+// add this to any route that needs to be protected
+  const requireSignin = expressJwt({
+    secret: config.jwtSecret,
+    userProperty: 'auth'
+  })
 
-// const requireSignin = … 
-// const hasAuthorization = (req, res) => { … }
+// add this to routes that need both authentication and authorization (like admin as well)
+  const hasAuthorization = (req, res, next) => {
+    const authorized = req.profile && req.auth 
+          && req.profile._id ==  req.auth._id // to check if the user updt/delete is the one authenticated.
+    if (!(authorized)) {
+      return res.status('403').json({
+        error: "User is not authorized"
+      })
+    }
+    next()
+  }
 
 export default { signin, signout, requireSignin, hasAuthorization }
