@@ -5,6 +5,7 @@ import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
 import Template from './../template'
+import authRoutes from './routes/auth.routes'
 
 const app = express()
 
@@ -17,5 +18,6 @@ app.use(cors())
 app.get('/', (req, res) => {
   res.status(200).send(Template())
  })
+ app.use('/', authRoutes)
 
 export default app
