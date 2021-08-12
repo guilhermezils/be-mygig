@@ -4,6 +4,8 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: 'Text is required'
   },
+
+  //instead of photo will work to have videos or youtube/vimeo links
   photo: {
     data: Buffer,
     contentType: String
