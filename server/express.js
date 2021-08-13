@@ -6,9 +6,13 @@ import cors from 'cors'
 import helmet from 'helmet'
 import Template from './../template'
 import authRoutes from './routes/auth.routes'
+import devBundle from './devBundle' // not for for production
+//request for static files
+import path from 'path'
+
 
 const app = express()
-
+devBundle.compile(app) // not for production 
 app.use(express.json()) //no need to use bodyParser anymore
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
@@ -28,5 +32,9 @@ app.use((err, req, res, next) => {
     console.log(err)
   }
 })
+
+//request for static files => path
+const CURRENT_WORKING_DIR = process.cwd()
+app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')))
 
 export default app
